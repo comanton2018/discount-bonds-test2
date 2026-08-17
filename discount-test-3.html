@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Дисконтные облигации Газпромбанка — Тест 3</title>
+  <style>
+    :root {
+      --bg: #f3f7fc;
+      --surface: #ffffff;
+      --surface-soft: #f8fbff;
+      --text: #142033;
+      --muted: #6b7a90;
+      --line: #dfe8f3;
+      --blue: #0b63ce;
+      --blue-dark: #084c9e;
+      --blue-soft: #eaf3ff;
+      --green: #168a52;
+      --green-soft: #e9f8f0;
+      --red: #c43b3b;
+      --red-soft: #fff0f0;
+      --amber: #ad6c00;
+      --shadow: 0 18px 55px rgba(26, 61, 101, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(11, 99, 206, 0.08), transparent 34%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app-shell {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 54px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: linear-gradient(145deg, var(--blue), #4d96ec);
+      box-shadow: 0 10px 24px rgba(11, 99, 206, 0.24);
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: white;
+      border-radius: 999px;
+    }
+
+    .brand-mark::before {
+      width: 20px;
+      height: 5px;
+      left: 11px;
+      top: 11px;
+    }
+
+    .brand-mark::after {
+      width: 5px;
+      height: 20px;
+      left: 11px;
+      top: 11px;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-eyebrow {
+      margin: 0;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-title {
+      margin: 2px 0 0;
+      font-size: 18px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .part-badge {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid #d9e6f5;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      color: #53657d;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .progress-card {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(215, 227, 241, 0.95);
+      border-radius: var(--radius-lg);
+      padding: 15px 16px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .progress-label {
+      font-weight: 800;
+      color: #30455f;
+    }
+
+    .progress-percent {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: #e8eff7;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), #4f9ae9);
+      transition: width 320ms ease;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid #e1e9f2;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .question-card {
+      padding: 30px;
+      animation: cardIn 280ms ease both;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      background: var(--blue-soft);
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .question-number {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .question-text {
+      margin: 0;
+      font-size: clamp(22px, 4vw, 31px);
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+    }
+
+    .answers {
+      display: grid;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .answer-btn {
+      width: 100%;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 13px;
+      align-items: center;
+      border: 1px solid #dfe7f1;
+      border-radius: var(--radius-md);
+      padding: 15px 16px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .answer-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      border-color: #9fc5ef;
+      box-shadow: 0 10px 24px rgba(41, 90, 145, 0.08);
+      background: #fbfdff;
+    }
+
+    .answer-btn:focus-visible,
+    .primary-btn:focus-visible,
+    .secondary-btn:focus-visible {
+      outline: 3px solid rgba(11, 99, 206, 0.20);
+      outline-offset: 3px;
+    }
+
+    .answer-btn:disabled {
+      cursor: default;
+      opacity: 1;
+    }
+
+    .answer-letter {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: #f1f5fa;
+      color: #4d6078;
+      font-weight: 900;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .answer-copy {
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    .answer-btn.correct {
+      border-color: #86d2ab;
+      background: var(--green-soft);
+      box-shadow: inset 0 0 0 1px rgba(22, 138, 82, 0.08);
+    }
+
+    .answer-btn.correct .answer-letter {
+      background: var(--green);
+      color: white;
+    }
+
+    .answer-btn.wrong {
+      border-color: #efaaaa;
+      background: var(--red-soft);
+      box-shadow: inset 0 0 0 1px rgba(196, 59, 59, 0.07);
+    }
+
+    .answer-btn.wrong .answer-letter {
+      background: var(--red);
+      color: white;
+    }
+
+    .feedback-panel {
+      display: none;
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid #dce7f3;
+      background: var(--surface-soft);
+      animation: fadeUp 260ms ease both;
+    }
+
+    .feedback-panel.visible {
+      display: block;
+    }
+
+    .feedback-panel.success {
+      border-color: #b8e4cb;
+      background: #f5fcf8;
+    }
+
+    .feedback-panel.error {
+      border-color: #f0c0c0;
+      background: #fff8f8;
+    }
+
+    .feedback-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .feedback-title.success {
+      color: var(--green);
+    }
+
+    .feedback-title.error {
+      color: var(--red);
+    }
+
+    .feedback-icon {
+      width: 26px;
+      height: 26px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .feedback-title.success .feedback-icon {
+      background: var(--green);
+    }
+
+    .feedback-title.error .feedback-icon {
+      background: var(--red);
+    }
+
+    .feedback-specific {
+      margin: 0 0 10px;
+      font-weight: 700;
+      color: #405169;
+      white-space: pre-line;
+    }
+
+    .feedback-explanation {
+      margin: 0;
+      color: #53637a;
+      white-space: pre-line;
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 22px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: 0;
+      border-radius: 13px;
+      padding: 14px 19px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .primary-btn {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 10px 22px rgba(11, 99, 206, 0.20);
+    }
+
+    .primary-btn:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background: #eef4fb;
+      color: var(--blue-dark);
+      border: 1px solid #d7e5f4;
+    }
+
+    .secondary-btn:hover {
+      background: #e5eff9;
+      transform: translateY(-1px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .result-card {
+      padding: 30px;
+      animation: cardIn 300ms ease both;
+    }
+
+    .result-hero {
+      text-align: center;
+      padding: 14px 8px 28px;
+      border-bottom: 1px solid #e7edf4;
+    }
+
+    .result-overline {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .result-score {
+      margin: 0;
+      font-size: clamp(34px, 7vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .result-rating {
+      margin: 12px 0 0;
+      font-size: 18px;
+      font-weight: 850;
+      color: #344a65;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 22px 0 0;
+    }
+
+    .stat-card {
+      padding: 17px;
+      border: 1px solid #e0e8f1;
+      border-radius: 16px;
+      background: #fbfdff;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      display: block;
+      margin-top: 6px;
+      font-size: 26px;
+      font-weight: 900;
+      color: #223852;
+    }
+
+    .result-section {
+      margin-top: 28px;
+    }
+
+    .result-section h2 {
+      margin: 0 0 14px;
+      font-size: 21px;
+      letter-spacing: -0.02em;
+    }
+
+    .error-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .error-item {
+      border: 1px solid #e4eaf1;
+      border-radius: 16px;
+      padding: 17px;
+      background: #fff;
+    }
+
+    .error-question {
+      margin: 0 0 11px;
+      font-size: 16px;
+      font-weight: 850;
+      color: #20344e;
+    }
+
+    .error-line {
+      margin: 7px 0 0;
+      color: #55657b;
+    }
+
+    .error-line strong {
+      color: #2b3e58;
+    }
+
+    .error-comment {
+      margin: 10px 0 0;
+      padding-top: 10px;
+      border-top: 1px solid #edf1f5;
+      color: #627087;
+    }
+
+    .topics-box {
+      border-radius: 17px;
+      padding: 18px;
+      background: var(--blue-soft);
+      border: 1px solid #cfe2f7;
+    }
+
+    .topics-list {
+      margin: 0;
+      padding-left: 20px;
+      color: #304965;
+    }
+
+    .topics-list li + li {
+      margin-top: 7px;
+    }
+
+    .perfect-box {
+      border: 1px solid #bfe5ce;
+      background: var(--green-soft);
+      color: #236444;
+      border-radius: 16px;
+      padding: 18px;
+      font-weight: 800;
+    }
+
+    .retry-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .app-shell {
+        width: min(100% - 20px, 920px);
+        padding-top: 18px;
+        padding-bottom: 32px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .brand-title {
+        max-width: 220px;
+        font-size: 16px;
+        white-space: normal;
+      }
+
+      .part-badge {
+        font-size: 12px;
+        padding: 7px 10px;
+      }
+
+      .question-card,
+      .result-card {
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      .question-text {
+        font-size: 23px;
+      }
+
+      .answer-btn {
+        grid-template-columns: 34px 1fr;
+        padding: 13px;
+      }
+
+      .answer-letter {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+      }
+
+      .answer-copy {
+        font-size: 15px;
+      }
+
+      .action-row,
+      .retry-row {
+        display: block;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .stat-value {
+        margin-top: 0;
+        font-size: 22px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <p class="brand-eyebrow">Тест 3</p>
+          <p class="brand-title">Дисконтные облигации Газпромбанка</p>
+        </div>
+      </div>
+      <div class="part-badge" id="sectionBadge">Один правильный ответ</div>
+    </header>
+
+    <section class="progress-card" id="progressCard" aria-label="Прогресс теста">
+      <div class="progress-row">
+        <span class="progress-label" id="progressLabel">Вопрос 1 из 19</span>
+        <span class="progress-percent" id="progressPercent">0%</span>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </section>
+
+    <section class="card question-card" id="quizCard">
+      <div class="section-kicker" id="sectionKicker">Часть 1 · Один правильный ответ</div>
+      <p class="question-number" id="questionNumber">Вопрос 1</p>
+      <h1 class="question-text" id="questionText"></h1>
+
+      <div class="answers" id="answers" role="group" aria-labelledby="questionText"></div>
+
+      <div class="feedback-panel" id="feedbackPanel" aria-live="polite">
+        <p class="feedback-title" id="feedbackTitle">
+          <span class="feedback-icon" id="feedbackIcon"></span>
+          <span id="feedbackTitleText"></span>
+        </p>
+        <p class="feedback-specific" id="feedbackSpecific"></p>
+        <p class="feedback-explanation" id="feedbackExplanation"></p>
+      </div>
+
+      <div class="action-row">
+        <button class="primary-btn hidden" id="nextButton" type="button">Следующий вопрос</button>
+      </div>
+    </section>
+
+    <section class="card result-card hidden" id="resultCard">
+      <div class="result-hero">
+        <p class="result-overline">Тест завершён</p>
+        <h1 class="result-score" id="resultScore">Результат: 0 из 19</h1>
+        <p class="result-rating" id="resultRating"></p>
+
+        <div class="stats-grid" aria-label="Статистика результата">
+          <div class="stat-card">
+            <span class="stat-label">Правильных</span>
+            <span class="stat-value" id="correctCount">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Неправильных</span>
+            <span class="stat-value" id="wrongCount">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Результат</span>
+            <span class="stat-value" id="resultPercent">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-section" id="errorsSection">
+        <h2>Вопросы, в которых были допущены ошибки</h2>
+        <div class="error-list" id="errorList"></div>
+      </div>
+
+      <div class="result-section hidden" id="perfectSection">
+        <div class="perfect-box">Ошибок нет. Все темы усвоены верно.</div>
+      </div>
+
+      <div class="result-section" id="topicsSection">
+        <h2>Что нужно повторить</h2>
+        <div class="topics-box">
+          <ul class="topics-list" id="topicsList"></ul>
+        </div>
+      </div>
+
+      <div class="retry-row">
+        <button class="secondary-btn" id="retryButton" type="button">Пройти тест ещё раз</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    "use strict";
+
+    const LETTERS = ["А", "Б", "В", "Г"];
+
+    const questions = [
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "За счёт чего формируется доход инвестора по дисконтной облигации?",
+        answers: [
+          "За счёт ежемесячного купона",
+          "За счёт разницы между ценой приобретения и суммой погашения",
+          "За счёт дивидендов Газпромбанка",
+          "За счёт начисления процентов брокером"
+        ],
+        correct: 1,
+        explanation: "По облигациям серии 006Р-05Р купонный доход не предусмотрен. Доход инвестора формируется за счёт дисконта — разницы между ценой приобретения и суммой, получаемой при погашении.",
+        topic: "Доходность дисконтной облигации",
+        feedback: [
+          "Неверно: по этой дисконтной облигации ежемесячного купона нет. Запомните: доход формируется за счёт дисконта.",
+          "",
+          "Неверно: дивиденды относятся к акциям, а не к облигациям. Здесь доход формируется за счёт разницы между ценой покупки и погашения.",
+          "Неверно: брокер не начисляет процентный доход по облигации. Запомните принцип дисконта: цена покупки ниже суммы погашения."
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Кто несёт обязательство по погашению дисконтной облигации Газпромбанка?",
+        answers: [
+          "ПАО «Газпром»",
+          "Российская Федерация",
+          "Московская биржа",
+          "Банк ГПБ (АО) как эмитент облигации"
+        ],
+        correct: 3,
+        explanation: "Говорить клиенту «Газпром вернёт деньги» неправильно. Эмитент серии 006Р-05Р — именно Банк ГПБ (АО). Обязательство по погашению несёт эмитент облигации.",
+        topic: "Эмитент и обязательства по облигации",
+        feedback: [
+          "Неверно: ПАО «Газпром» не является эмитентом этой серии. Обязательство несёт Банк ГПБ (АО).",
+          "Неверно: государственная гарантия по этой облигации не заявлена. Обязательство по погашению несёт эмитент.",
+          "Неверно: Московская биржа организует торги, но не принимает на себя обязательство по погашению этой облигации.",
+          ""
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Какая формулировка о юридической защите владельца облигации наиболее корректна?",
+        answers: [
+          "Государство гарантирует возврат номинала по аналогии со вкладом",
+          "Выплата гарантирована системой страхования вкладов",
+          "Права владельца закреплены законодательством о рынке ценных бумаг и условиями выпуска, но кредитный риск эмитента сохраняется",
+          "В случае дефолта Московская биржа выплатит инвестору номинал"
+        ],
+        correct: 2,
+        explanation: "Права владельца облигации защищаются законодательством и условиями выпуска, однако облигация не является вкладом и не страхуется системой страхования вкладов. Кредитный риск эмитента сохраняется.",
+        topic: "Юридическая защита и кредитный риск",
+        feedback: [
+          "Неверно: облигация не является банковским вкладом и не имеет автоматической государственной гарантии возврата номинала.",
+          "Неверно: система страхования вкладов не распространяется на облигации. У владельца есть права по закону и условиям выпуска, но кредитный риск остаётся.",
+          "",
+          "Неверно: Московская биржа не обязана возмещать номинал при дефолте эмитента. Ключевое правило — ответственность несёт эмитент."
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "С какой суммы в общем случае рассчитывается НДФЛ при погашении дисконтной облигации?",
+        answers: [
+          "Со всей суммы, полученной при погашении",
+          "Только с номинала облигации",
+          "С финансового результата: доходы минус соответствующие документально подтверждённые расходы",
+          "Налог по дисконтным облигациям отсутствует"
+        ],
+        correct: 2,
+        explanation: "Например, облигация приобретена за 565 ₽ и погашена за 1 000 ₽. Экономический результат составляет 435 ₽ до учёта иных применимых расходов и налоговых особенностей.",
+        topic: "Налогообложение",
+        feedback: [
+          "Неверно: в общем случае налог считают не со всей суммы погашения, а с финансового результата с учётом соответствующих расходов.",
+          "Неверно: номинал сам по себе не является налоговой базой. Важен финансовый результат операции.",
+          "",
+          "Неверно: доход по операциям с ценными бумагами может формировать налоговую базу. Запомните: ориентир — финансовый результат."
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Налоговая база клиента по операциям с ценными бумагами за год составила 3 000 000 ₽. Какой порядок ставок НДФЛ применяется для налогового резидента РФ?",
+        answers: [
+          "Все 3 млн ₽ облагаются по ставке 13%",
+          "Все 3 млн ₽ облагаются по ставке 15%",
+          "До 2,4 млн ₽ применяется 13%, к превышению применяется 15%",
+          "До 5 млн ₽ применяется 13%"
+        ],
+        correct: 2,
+        explanation: "2 400 000 × 13% = 312 000 ₽\n600 000 × 15% = 90 000 ₽\n\nИтого: 402 000 ₽ НДФЛ.",
+        topic: "Налогообложение",
+        feedback: [
+          "Неверно: при указанной базе часть суммы выше 2,4 млн ₽ облагается по более высокой ставке.",
+          "Неверно: ставка 15% применяется не ко всей базе, а к превышению установленного порога.",
+          "",
+          "Неверно: в рамках этого вопроса порог для применения 13% составляет 2,4 млн ₽, а превышение облагается по ставке 15%."
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Как работает льгота долгосрочного владения ценными бумагами?",
+        answers: [
+          "Она действует только по государственным облигациям",
+          "Она позволяет уменьшить налогооблагаемый доход при соблюдении требований к сроку владения и самой ценной бумаге",
+          "Она освобождает от НДФЛ все доходы по брокерскому счёту после трёх лет его существования",
+          "Она распространяется только на купонный доход"
+        ],
+        correct: 1,
+        explanation: "При реализации или погашении ценных бумаг, соответствующих установленным требованиям и находившихся в собственности более трёх лет, может применяться инвестиционный налоговый вычет. Предельный размер вычета связан со сроком владения.",
+        topic: "Льгота долгосрочного владения",
+        feedback: [
+          "Неверно: льгота не ограничена только государственными облигациями. Важны требования закона к бумаге и сроку владения.",
+          "",
+          "Неверно: сам возраст брокерского счёта не освобождает автоматически все доходы от НДФЛ. Учитываются конкретные бумаги и срок их владения.",
+          "Неверно: льгота не сводится только к купонному доходу. Ключевое значение имеют условия владения и соответствие бумаги требованиям."
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Что, как правило, произойдёт с рыночной ценой длинной дисконтной облигации, если требуемые рынком процентные ставки существенно снизятся?",
+        answers: [
+          "Цена будет стремиться снизиться",
+          "Цена будет стремиться вырасти",
+          "Цена всегда останется равной цене покупки",
+          "Облигация автоматически погасится досрочно"
+        ],
+        correct: 1,
+        explanation: "Когда рыночные ставки снижаются, ранее выпущенные облигации с более высокой потенциальной доходностью становятся привлекательнее, поэтому их рыночная цена обычно растёт.\n\nДополнительный вопрос сотруднику устно: почему дисконтная облигация особенно чувствительна к изменению ставок?\nОжидаемый ответ: основной денежный поток приходится на дату погашения, промежуточных купонов нет, поэтому дюрация такой бумаги высокая.",
+        topic: "Процентный риск и цена облигации",
+        feedback: [
+          "Неверно: при снижении требуемой доходности цена ранее выпущенной облигации обычно движется в противоположную сторону — вверх.",
+          "",
+          "Неверно: рыночная цена не фиксируется на уровне покупки. Она меняется вместе с рыночной доходностью и другими факторами.",
+          "Неверно: изменение рыночных ставок само по себе не означает автоматического досрочного погашения."
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Клиент купил облигацию за 565 ₽. Через год ему срочно понадобились деньги. Что он гарантированно сможет получить?",
+        answers: [
+          "1 000 ₽ от Газпромбанка",
+          "565 ₽ обратно",
+          "565 ₽ плюс накопленный купон",
+          "Ничего из перечисленного: до погашения бумага реализуется по доступной рыночной цене"
+        ],
+        correct: 3,
+        explanation: "Номинал облигации составляет 1 000 ₽, но получить номинал клиент рассчитывает при погашении при условии исполнения эмитентом обязательств. Если деньги потребуются раньше, облигацию придётся продавать по текущей рыночной цене.",
+        topic: "Досрочная продажа и рыночная цена",
+        feedback: [
+          "Неверно: 1 000 ₽ — ориентир на погашение при исполнении эмитентом обязательств, а не гарантированная цена досрочной продажи.",
+          "Неверно: цена покупки не гарантирует возврат той же суммы при продаже через год.",
+          "Неверно: у рассматриваемой дисконтной облигации нет накопленного ежемесячного купона. Досрочная продажа идёт по рыночной цене.",
+          ""
+        ]
+      },
+      {
+        section: "Часть 1 · Один правильный ответ",
+        question: "Клиент услышал: «При покупке за 565 ₽ доход составит примерно 77%». Что это означает?",
+        answers: [
+          "Инвестор получает примерно 77% каждый год",
+          "77% — это купонная ставка",
+          "Это приблизительный прирост от 565 ₽ до 1 000 ₽ за весь оставшийся период до погашения",
+          "Через год инвестор гарантированно получит 1 000 ₽"
+        ],
+        correct: 2,
+        explanation: "1 000 − 565 = 435 ₽\n\n435 / 565 × 100% ≈ 77%\n\n77% — это доход за весь оставшийся период до погашения, а не годовая доходность.",
+        topic: "Доходность дисконтной облигации",
+        feedback: [
+          "Неверно: 77% в этом примере — не годовая ставка, а совокупный прирост за оставшийся срок до погашения.",
+          "Неверно: у этой бумаги купон не предусмотрен. 77% описывает прирост цены от покупки до номинала.",
+          "",
+          "Неверно: 77% не означает получение 1 000 ₽ уже через год. Речь идёт о полном оставшемся периоде до погашения."
+        ]
+      },
+      {
+        section: "Операционный блок",
+        question: "В какое время сейчас можно купить рассматриваемые дисконтные облигации непосредственно у эмитента?",
+        answers: [
+          "С 06:50 до 23:50 мск",
+          "С 09:50 до 19:00 мск",
+          "С 10:00 до 18:30 мск",
+          "Круглосуточно"
+        ],
+        correct: 2,
+        explanation: "Для нашего сценария важно отличать общий график торгов облигациями на Московской бирже от покупки бумаги у эмитента. Покупка у эмитента сейчас доступна с 10:00 до 18:30 мск.",
+        topic: "График покупки у эмитента",
+        feedback: [
+          "Неверно: это не установленное окно покупки рассматриваемой бумаги непосредственно у эмитента.",
+          "Неверно: в нашем сценарии окно покупки у эмитента отличается от общего графика торгов.",
+          "",
+          "Неверно: покупка у эмитента не доступна круглосуточно. Запомните рабочее окно: 10:00–18:30 мск."
+        ]
+      },
+      {
+        section: "Операционный блок",
+        question: "Какая комиссия учитывается при покупке дисконтных облигаций?",
+        answers: [
+          "Комиссии нет",
+          "0,3%",
+          "0,06%",
+          "1%"
+        ],
+        correct: 3,
+        explanation: "При покупке дисконтных облигаций в используемом нами сценарии необходимо учитывать комиссию 1% от суммы сделки.\n\nПример: если сумма покупки составляет 1 000 000 ₽, комиссия составит 10 000 ₽.",
+        topic: "Комиссия при покупке",
+        feedback: [
+          "Неверно: при покупке в рассматриваемом сценарии комиссия есть и составляет 1% от суммы сделки.",
+          "Неверно: 0,3% относится к возможной комиссии при продаже в зависимости от тарифа, а не к этой покупке.",
+          "Неверно: 0,06% относится к возможной комиссии при продаже по другому тарифу. При покупке здесь учитывается 1%.",
+          ""
+        ]
+      },
+      {
+        section: "Операционный блок",
+        question: "Какая комиссия взимается при продаже дисконтных облигаций на вторичном рынке?",
+        answers: [
+          "Всегда 1%",
+          "Всегда 0,8%",
+          "0,3% или 0,06% в зависимости от брокерского тарифа клиента",
+          "Комиссии нет"
+        ],
+        correct: 2,
+        explanation: "Комиссия при продаже зависит от тарифа брокерского обслуживания клиента:\n\n• тариф «Базовый» — от 0,3% от суммы сделки;\n• тариф «Инвестор» — от 0,06% от суммы сделки.\n\nВажно не путать эту комиссию с комиссией 1%, которая учитывается при покупке облигаций в рассматриваемом сценарии.",
+        topic: "Комиссия при продаже",
+        feedback: [
+          "Неверно: 1% в этом тесте относится к покупке. При продаже ставка зависит от брокерского тарифа.",
+          "Неверно: фиксированной комиссии 0,8% для продажи в условиях этого теста нет.",
+          "",
+          "Неверно: при продаже комиссия есть; её размер зависит от тарифа клиента."
+        ]
+      },
+      {
+        section: "Операционный блок",
+        question: "Какая комиссия взимается при выводе денежных средств?",
+        answers: [
+          "1% от выводимой суммы",
+          "0,3%",
+          "0,06%",
+          "Комиссия за вывод денежных средств не взимается"
+        ],
+        correct: 3,
+        explanation: "При выводе денежных средств комиссия не взимается. Необходимо разделять три операции: покупку облигации, продажу облигации и последующий вывод денежных средств.",
+        topic: "Комиссия за вывод денежных средств",
+        feedback: [
+          "Неверно: 1% относится к покупке облигаций в рассматриваемом сценарии, а не к выводу денег.",
+          "Неверно: 0,3% может относиться к продаже по тарифу, но не к выводу денежных средств.",
+          "Неверно: 0,06% может относиться к продаже по тарифу, но не к выводу денежных средств.",
+          ""
+        ]
+      },
+      {
+        section: "Блок по мотивации сотрудников",
+        question: "Как рассчитывается мотивация сотрудника фронта за продажу дисконтных облигаций?",
+        answers: [
+          "0,3% при любой сумме продажи",
+          "0,15% при любой сумме продажи",
+          "До 1 млн ₽ — 0,15%, от 1 млн ₽ — 0,3%",
+          "До 1 млн ₽ — 0,3%, от 1 млн ₽ — 0,15%"
+        ],
+        correct: 2,
+        explanation: "Мотивация сотрудника зависит от объёма продажи:\n\n• до 1 000 000 ₽ — 0,15% от суммы;\n• от 1 000 000 ₽ — 0,3% от суммы.\n\nНапример, при продаже на 1 000 000 ₽ мотивация сотрудника составит:\n\n1 000 000 × 0,3% = 3 000 ₽.",
+        topic: "Мотивация сотрудника фронта",
+        feedback: [
+          "Неверно: ставка мотивации зависит от объёма продажи и не всегда равна 0,3%.",
+          "Неверно: ставка мотивации зависит от объёма продажи и при сумме от 1 млн ₽ составляет 0,3%.",
+          "",
+          "Неверно: градация указана наоборот. До 1 млн ₽ — 0,15%, от 1 млн ₽ — 0,3%."
+        ]
+      },
+      {
+        section: "Блок по мотивации сотрудников",
+        question: "Сколько получит сотрудник фронта по мотивации при продаже дисконтных облигаций на сумму 2 000 000 ₽?",
+        answers: [
+          "1 500 ₽",
+          "3 000 ₽",
+          "6 000 ₽",
+          "20 000 ₽"
+        ],
+        correct: 2,
+        explanation: "2 000 000 × 0,3% = 6 000 ₽.\n\nЭтот вопрос помогает сотруднику не просто запомнить процент мотивации, а понять его в реальных деньгах.",
+        topic: "Расчёт мотивации сотрудника",
+        feedback: [
+          "Неверно: для суммы 2 млн ₽ применяется ставка мотивации 0,3%.",
+          "Неверно: 3 000 ₽ соответствовали бы 0,15% от 2 млн ₽, но при этой сумме применяется 0,3%.",
+          "",
+          "Неверно: 20 000 ₽ соответствуют 1%, а ставка мотивации при продаже 2 млн ₽ составляет 0,3%."
+        ]
+      },
+      {
+        section: "Блок по рискам",
+        question: "Какой основной риск принимает на себя клиент, покупая дисконтную облигацию и планируя держать её до погашения?",
+        answers: [
+          "Риск того, что брокер отменит номинал облигации",
+          "Кредитный риск эмитента, то есть риск невыполнения Банком ГПБ (АО) своих обязательств",
+          "Риск невыплаты ежемесячного купона",
+          "Риск того, что Московская биржа откажется погашать облигацию"
+        ],
+        correct: 1,
+        explanation: "Обязательство по облигации несёт эмитент — Банк ГПБ (АО). Поэтому даже если клиент планирует держать бумагу до погашения, кредитный риск эмитента сохраняется.",
+        topic: "Кредитный риск эмитента",
+        feedback: [
+          "Неверно: номинал определяется условиями выпуска, а основной риск до погашения связан с исполнением обязательств эмитентом.",
+          "",
+          "Неверно: ежемесячного купона у рассматриваемой дисконтной облигации нет. Основной риск при удержании до погашения — кредитный риск эмитента.",
+          "Неверно: Московская биржа не является стороной, обязанной погашать эту облигацию. Обязательства лежат на эмитенте."
+        ]
+      },
+      {
+        section: "Блок по рискам",
+        question: "Клиент купил облигацию за 565 ₽, но через год решил продать её досрочно. Какой риск для него наиболее существенен?",
+        answers: [
+          "Он обязательно потеряет весь доход",
+          "Банк удержит штраф за досрочное расторжение",
+          "Рыночная цена облигации в момент продажи может оказаться ниже цены покупки",
+          "Продать облигацию до 2031 года невозможно"
+        ],
+        correct: 2,
+        explanation: "Если клиенту понадобятся деньги до погашения, бумага продаётся на вторичном рынке. Цена продажи заранее не фиксируется и может быть как выше, так и ниже цены покупки.",
+        topic: "Риск досрочной продажи",
+        feedback: [
+          "Неверно: потеря всего дохода не является неизбежной. Результат зависит от рыночной цены на момент продажи.",
+          "Неверно: облигация не закрывается как вклад со штрафом. При досрочном выходе клиент продаёт бумагу на рынке.",
+          "",
+          "Неверно: облигацию можно продать до погашения, но цена такой продажи заранее не гарантирована."
+        ]
+      },
+      {
+        section: "Блок по рискам",
+        question: "Что может привести к существенному снижению рыночной стоимости дисконтной облигации после её покупки?",
+        answers: [
+          "Существенный рост рыночных процентных ставок",
+          "Существенное снижение рыночных процентных ставок",
+          "Отсутствие ежемесячного купона само по себе",
+          "Приближение даты погашения при прочих равных"
+        ],
+        correct: 0,
+        explanation: "При росте требуемой рынком доходности стоимость ранее выпущенной облигации обычно снижается. Для длинной дисконтной облигации процентный риск особенно важен из-за высокой чувствительности её цены к изменению ставок.",
+        topic: "Процентный риск и цена облигации",
+        feedback: [
+          "",
+          "Неверно: снижение рыночных ставок, наоборот, обычно поддерживает рост цены ранее выпущенной облигации.",
+          "Неверно: отсутствие купона является характеристикой бумаги, но само по себе не означает существенного падения цены после покупки.",
+          "Неверно: при прочих равных приближение к погашению само по себе не является причиной существенного снижения стоимости до номинала."
+        ]
+      },
+      {
+        section: "Блок по рискам",
+        question: "Какое утверждение наиболее полно описывает риски дисконтной облигации?",
+        answers: [
+          "Рисков практически нет, поскольку облигацию выпускает банк",
+          "Единственный риск — изменение ключевой ставки",
+          "Существуют кредитный, процентный, рыночный и риск ликвидности, особенно если клиенту потребуется продать бумагу до погашения",
+          "Единственный риск клиента — уплата НДФЛ"
+        ],
+        correct: 2,
+        explanation: "Сотрудник должен понимать четыре основных риска:\n\n• кредитный — риск неисполнения обязательств эмитентом;\n• процентный — изменение ставок влияет на рыночную стоимость облигации;\n• рыночный — цена бумаги может меняться в течение срока обращения;\n• риск ликвидности — в нужный момент может быть невозможно быстро продать необходимый объём по желаемой цене.",
+        topic: "Риски облигаций",
+        feedback: [
+          "Неверно: статус банка-эмитента не устраняет риски. У облигации сохраняются кредитный, процентный, рыночный и ликвидностный риски.",
+          "Неверно: изменение ставки — только один из рисков. Нужно учитывать также кредитный, рыночный и риск ликвидности.",
+          "",
+          "Неверно: налогообложение не является единственным риском инвестиции. Основные инвестиционные риски шире."
+        ]
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let answersLog = [];
+    let answeredCurrent = false;
+
+    const quizCard = document.getElementById("quizCard");
+    const resultCard = document.getElementById("resultCard");
+    const questionNumber = document.getElementById("questionNumber");
+    const questionText = document.getElementById("questionText");
+    const answersContainer = document.getElementById("answers");
+    const nextButton = document.getElementById("nextButton");
+
+    const feedbackPanel = document.getElementById("feedbackPanel");
+    const feedbackTitle = document.getElementById("feedbackTitle");
+    const feedbackIcon = document.getElementById("feedbackIcon");
+    const feedbackTitleText = document.getElementById("feedbackTitleText");
+    const feedbackSpecific = document.getElementById("feedbackSpecific");
+    const feedbackExplanation = document.getElementById("feedbackExplanation");
+
+    const progressCard = document.getElementById("progressCard");
+    const progressLabel = document.getElementById("progressLabel");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressBar = document.getElementById("progressBar");
+
+    const sectionBadge = document.getElementById("sectionBadge");
+    const sectionKicker = document.getElementById("sectionKicker");
+
+    const resultScore = document.getElementById("resultScore");
+    const resultRating = document.getElementById("resultRating");
+    const correctCount = document.getElementById("correctCount");
+    const wrongCount = document.getElementById("wrongCount");
+    const resultPercent = document.getElementById("resultPercent");
+    const errorsSection = document.getElementById("errorsSection");
+    const errorList = document.getElementById("errorList");
+    const perfectSection = document.getElementById("perfectSection");
+    const topicsSection = document.getElementById("topicsSection");
+    const topicsList = document.getElementById("topicsList");
+    const retryButton = document.getElementById("retryButton");
+
+    function optionLabel(index, text) {
+      return `${LETTERS[index]}. ${text}`;
+    }
+
+    function updateProgress() {
+      const answeredCount = answersLog.length;
+      const percent = Math.round((answeredCount / questions.length) * 100);
+      progressLabel.textContent = `Вопрос ${currentIndex + 1} из ${questions.length}`;
+      progressPercent.textContent = `${percent}%`;
+      progressBar.style.width = `${percent}%`;
+    }
+
+    function renderQuestion() {
+      answeredCurrent = false;
+      const item = questions[currentIndex];
+
+      quizCard.style.animation = "none";
+      void quizCard.offsetWidth;
+      quizCard.style.animation = "";
+
+      questionNumber.textContent = `Вопрос ${currentIndex + 1}`;
+      questionText.textContent = item.question;
+      sectionKicker.textContent = item.section;
+      sectionBadge.textContent = item.section.includes("Операционный")
+        ? "Операционный блок"
+        : item.section.includes("мотивации")
+          ? "Мотивация"
+          : item.section.includes("рискам")
+            ? "Риски"
+            : "Один правильный ответ";
+
+      answersContainer.innerHTML = "";
+      feedbackPanel.className = "feedback-panel";
+      feedbackSpecific.textContent = "";
+      feedbackExplanation.textContent = "";
+      nextButton.classList.add("hidden");
+
+      item.answers.forEach((answer, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "answer-btn";
+        button.dataset.index = String(index);
+        button.setAttribute("aria-label", optionLabel(index, answer));
+
+        const letter = document.createElement("span");
+        letter.className = "answer-letter";
+        letter.textContent = LETTERS[index];
+
+        const copy = document.createElement("span");
+        copy.className = "answer-copy";
+        copy.textContent = answer;
+
+        button.append(letter, copy);
+        button.addEventListener("click", () => selectAnswer(index));
+        answersContainer.appendChild(button);
+      });
+
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function selectAnswer(selectedIndex) {
+      if (answeredCurrent) return;
+
+      answeredCurrent = true;
+      const item = questions[currentIndex];
+      const isCorrect = selectedIndex === item.correct;
+      const buttons = [...answersContainer.querySelectorAll(".answer-btn")];
+
+      buttons.forEach((button, index) => {
+        button.disabled = true;
+        if (index === item.correct) {
+          button.classList.add("correct");
+        }
+        if (index === selectedIndex && !isCorrect) {
+          button.classList.add("wrong");
+        }
+      });
+
+      if (isCorrect) {
+        score += 1;
+      }
+
+      answersLog.push({
+        number: currentIndex + 1,
+        question: item.question,
+        selectedIndex,
+        selectedAnswer: item.answers[selectedIndex],
+        correctIndex: item.correct,
+        correctAnswer: item.answers[item.correct],
+        isCorrect,
+        topic: item.topic,
+        explanation: item.explanation
+      });
+
+      feedbackPanel.classList.add("visible", isCorrect ? "success" : "error");
+      feedbackTitle.className = `feedback-title ${isCorrect ? "success" : "error"}`;
+      feedbackIcon.textContent = isCorrect ? "✓" : "!";
+      feedbackTitleText.textContent = isCorrect ? "Верно" : "Неверно";
+
+      if (isCorrect) {
+        feedbackSpecific.textContent = "Ответ зафиксирован.";
+      } else {
+        const specific = item.feedback?.[selectedIndex];
+        feedbackSpecific.textContent = specific || "Выбранный вариант неверен. Ориентируйтесь на правило из пояснения ниже.";
+      }
+
+      feedbackExplanation.textContent = item.explanation;
+
+      nextButton.textContent = currentIndex === questions.length - 1
+        ? "Завершить тест"
+        : "Следующий вопрос";
+      nextButton.classList.remove("hidden");
+
+      updateProgress();
+    }
+
+    function getRating(percent) {
+      if (percent >= 90) return "Отличный результат";
+      if (percent >= 75) return "Хороший результат";
+      if (percent >= 60) return "Материал стоит повторить";
+      return "Рекомендуется повторно пройти обучение";
+    }
+
+    function showResults() {
+      const total = questions.length;
+      const wrong = total - score;
+      const percent = Math.round((score / total) * 100);
+      const mistakes = answersLog.filter((entry) => !entry.isCorrect);
+
+      quizCard.classList.add("hidden");
+      progressCard.classList.add("hidden");
+      resultCard.classList.remove("hidden");
+      sectionBadge.textContent = "Результаты";
+
+      resultScore.textContent = `Результат: ${score} из ${total}`;
+      resultRating.textContent = getRating(percent);
+      correctCount.textContent = String(score);
+      wrongCount.textContent = String(wrong);
+      resultPercent.textContent = `${percent}%`;
+
+      errorList.innerHTML = "";
+      topicsList.innerHTML = "";
+
+      if (mistakes.length === 0) {
+        errorsSection.classList.add("hidden");
+        topicsSection.classList.add("hidden");
+        perfectSection.classList.remove("hidden");
+      } else {
+        errorsSection.classList.remove("hidden");
+        topicsSection.classList.remove("hidden");
+        perfectSection.classList.add("hidden");
+
+        mistakes.forEach((mistake) => {
+          const item = document.createElement("article");
+          item.className = "error-item";
+
+          const q = document.createElement("p");
+          q.className = "error-question";
+          q.textContent = `Вопрос ${mistake.number}. ${mistake.question}`;
+
+          const userAnswer = document.createElement("p");
+          userAnswer.className = "error-line";
+          const userStrong = document.createElement("strong");
+          userStrong.textContent = "Ваш ответ: ";
+          userAnswer.append(userStrong, document.createTextNode(optionLabel(mistake.selectedIndex, mistake.selectedAnswer)));
+
+          const correctAnswer = document.createElement("p");
+          correctAnswer.className = "error-line";
+          const correctStrong = document.createElement("strong");
+          correctStrong.textContent = "Правильный ответ: ";
+          correctAnswer.append(correctStrong, document.createTextNode(optionLabel(mistake.correctIndex, mistake.correctAnswer)));
+
+          const comment = document.createElement("p");
+          comment.className = "error-comment";
+          comment.textContent = `Комментарий: ${mistake.explanation}`;
+
+          item.append(q, userAnswer, correctAnswer, comment);
+          errorList.appendChild(item);
+        });
+
+        const uniqueTopics = [...new Set(mistakes.map((mistake) => mistake.topic))];
+        uniqueTopics.forEach((topic) => {
+          const li = document.createElement("li");
+          li.textContent = topic;
+          topicsList.appendChild(li);
+        });
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function nextQuestion() {
+      if (!answeredCurrent) return;
+
+      if (currentIndex === questions.length - 1) {
+        showResults();
+        return;
+      }
+
+      currentIndex += 1;
+      renderQuestion();
+    }
+
+    function resetQuiz() {
+      currentIndex = 0;
+      score = 0;
+      answersLog = [];
+      answeredCurrent = false;
+
+      resultCard.classList.add("hidden");
+      quizCard.classList.remove("hidden");
+      progressCard.classList.remove("hidden");
+      errorList.innerHTML = "";
+      topicsList.innerHTML = "";
+      perfectSection.classList.add("hidden");
+      errorsSection.classList.remove("hidden");
+      topicsSection.classList.remove("hidden");
+
+      renderQuestion();
+    }
+
+    nextButton.addEventListener("click", nextQuestion);
+    retryButton.addEventListener("click", resetQuiz);
+
+    renderQuestion();
+  </script>
+</body>
+</html>
